@@ -3,8 +3,8 @@ import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signe
 import { ethers } from "hardhat";
 
 import type { Signers } from "../types";
-import { shouldBehaveLikeGreeter } from "./Greeter.behavior";
-import { deployGreeterFixture } from "./Greeter.fixture";
+import { shouldBehaveLikeThrottleWallet } from "./ThrottleWallet.behavior";
+import { deployThrottleWalletFixture } from "./ThrottleWallet.fixture";
 
 describe("Unit tests", function () {
   before(async function () {
@@ -16,12 +16,12 @@ describe("Unit tests", function () {
     this.loadFixture = loadFixture;
   });
 
-  describe("Greeter", function () {
+  describe("ThrottleWallet", function () {
     beforeEach(async function () {
-      const { greeter } = await this.loadFixture(deployGreeterFixture);
-      this.greeter = greeter;
+      const { throttleWallet } = await this.loadFixture(deployThrottleWalletFixture);
+      this.throttleWallet = throttleWallet;
     });
 
-    shouldBehaveLikeGreeter();
+    shouldBehaveLikeThrottleWallet();
   });
 });
