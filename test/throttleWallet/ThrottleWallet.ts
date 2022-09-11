@@ -18,7 +18,8 @@ describe("Unit tests", function () {
 
   describe("ThrottleWallet", function () {
     beforeEach(async function () {
-      const { throttleWallet } = await this.loadFixture(deployThrottleWalletFixture);
+      const { throttleWallet, mockToken } = await this.loadFixture(deployThrottleWalletFixture);
+      this.mockToken = mockToken;
       this.throttleWallet = throttleWallet;
     });
 
