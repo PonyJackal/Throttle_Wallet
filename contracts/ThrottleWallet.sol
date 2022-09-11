@@ -5,9 +5,9 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract ThrottleWallet is ReentrancyGuard {
-    IERC20 public token;
-    uint256 public maxLimit;
-    uint256 public refillRate;
+    IERC20 public immutable token;
+    uint256 public immutable maxLimit;
+    uint256 public immutable refillRate;
 
     struct AccountInfo {
         uint256 balance;
