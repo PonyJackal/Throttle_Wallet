@@ -32,7 +32,7 @@ export function shouldBehaveLikeThrottleWallet(): void {
     beforeEach(async function () {
       const { admin, alice } = this.signers;
       const { throttleWallet, mockToken } = this;
-      const amount = ethers.utils.parseEther("150");
+      const amount = ethers.utils.parseEther("160");
       // allow tokens to the contract
       await mockToken.connect(admin).approve(throttleWallet.address, amount);
       // deposit tokens to alice
@@ -65,9 +65,35 @@ export function shouldBehaveLikeThrottleWallet(): void {
       const { throttleWallet, mockToken } = this;
       // sepnd 90 tokens to john
       await throttleWallet.connect(alice).spend(john.address, ethers.utils.parseEther("90"));
-      // spend 50 tokens to john
+      // spend 90 tokens to john
       const tx2 = throttleWallet.connect(alice).spend(john.address, ethers.utils.parseEther("90"));
       await expect(tx2).to.be.revertedWith("ThrottleWallet: insufficient balance");
+    });
+
+    it("should revert it if limit is exceeded 1", async function () {
+      const { admin, alice, john } = this.signers;
+      const { throttleWallet, mockToken } = this;
+      // sepnd 90 tokens to john
+      await throttleWallet.connect(alice).spend(john.address, ethers.utils.parseEther("90"));
+      // spend 60 tokens to john
+      const tx = throttleWallet.connect(alice).spend(john.address, ethers.utils.parseEther("60"));
+      await expect(tx).to.be.revertedWith("ThrottleWallet: limit exceeded");
+    });
+
+    it("should revert it if limit is exceeded", async function () {
+      const { admin, alice, john } = this.signers;
+      const { throttleWallet, mockToken } = this;
+      // sepnd 90 tokens to john
+      await throttleWallet.connect(alice).spend(john.address, ethers.utils.parseEther("90"));
+      // mint 3 blocks
+      await ethers.provider.send("evm_mine", []);
+      await ethers.provider.send("evm_mine", []);
+      await ethers.provider.send("evm_mine", []);
+      // should be able to spend 50 tokens to john
+      await throttleWallet.connect(alice).spend(john.address, ethers.utils.parseEther("50"));
+      // spend 15 tokens to john
+      const tx = throttleWallet.connect(alice).spend(john.address, ethers.utils.parseEther("15"));
+      await expect(tx).to.be.revertedWith("ThrottleWallet: limit exceeded");
     });
 
     it("should emit Spent event", async function () {
