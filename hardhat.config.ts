@@ -85,7 +85,7 @@ const config: HardhatUserConfig = {
       accounts: [
         {
           privateKey,
-          balance: "100",
+          balance: "2797856500000000",
         },
       ],
       chainId: chainIds.hardhat,

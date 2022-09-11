@@ -5,7 +5,6 @@ import type { MockToken } from "../../src/types/contracts/MockToken";
 import type { ThrottleWallet } from "../../src/types/contracts/ThrottleWallet";
 import type { MockToken__factory } from "../../src/types/factories/contracts/MockToken__factory";
 import type { ThrottleWallet__factory } from "../../src/types/factories/contracts/ThrottleWallet__factory";
-import { MAX_LIMIT, REFILL_RATE } from "../constants";
 
 export async function deployThrottleWalletFixture(): Promise<{ throttleWallet: ThrottleWallet; mockToken: MockToken }> {
   const signers: SignerWithAddress[] = await ethers.getSigners();
@@ -19,7 +18,9 @@ export async function deployThrottleWalletFixture(): Promise<{ throttleWallet: T
     await ethers.getContractFactory("ThrottleWallet")
   );
   const throttleWallet: ThrottleWallet = <ThrottleWallet>(
-    await throttleWalletFactory.connect(admin).deploy(mockToken.address, MAX_LIMIT, REFILL_RATE)
+    await throttleWalletFactory
+      .connect(admin)
+      .deploy(mockToken.address, ethers.utils.parseEther("100"), ethers.utils.parseEther("10"))
   );
   await throttleWallet.deployed();
 

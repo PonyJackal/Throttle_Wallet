@@ -15,7 +15,7 @@ contract ThrottleWallet is ReentrancyGuard {
         uint256 limit;
     }
 
-    mapping(address => AccountInfo) public accounts;
+    mapping(address => AccountInfo) internal accounts;
 
     // -----------------------------------------
     // ThrottleWallet Events
@@ -76,6 +76,10 @@ contract ThrottleWallet is ReentrancyGuard {
 
         require(token.transfer(recipient, amount), "ThrottleWallet: transfer failed");
         emit Spent(msg.sender, recipient, amount);
+    }
+
+    function balanceOf(address account) external view returns (uint256) {
+        return accounts[account].balance;
     }
 
     function _calculateLimit(address account) internal view returns (uint256) {
