@@ -63,9 +63,9 @@ export function shouldBehaveLikeThrottleWallet(): void {
     it("should revert it if balance is sufficient", async function () {
       const { admin, alice, john } = this.signers;
       const { throttleWallet, mockToken } = this;
-      // deposit 90 tokens to john
-      const tx1 = throttleWallet.connect(alice).spend(john.address, ethers.utils.parseEther("90"));
-      // deposit 50 tokens to john
+      // sepnd 90 tokens to john
+      await throttleWallet.connect(alice).spend(john.address, ethers.utils.parseEther("90"));
+      // spend 50 tokens to john
       const tx2 = throttleWallet.connect(alice).spend(john.address, ethers.utils.parseEther("90"));
       await expect(tx2).to.be.revertedWith("ThrottleWallet: insufficient balance");
     });
