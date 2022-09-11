@@ -11,8 +11,16 @@ import "solidity-coverage";
 dotenvConfig({ path: resolve(__dirname, "./.env") });
 
 // Ensure that we have all the environment variables we need.
-const privateKey = process.env.PRIVATE_KEY;
-if (!privateKey) {
+const privateKey1 = process.env.PRIVATE_KEY_1;
+if (!privateKey1) {
+  throw new Error("Please set your PRIVATE_KEY in a .env file");
+}
+const privateKey2 = process.env.PRIVATE_KEY_2;
+if (!privateKey2) {
+  throw new Error("Please set your PRIVATE_KEY in a .env file");
+}
+const privateKey3 = process.env.PRIVATE_KEY_3;
+if (!privateKey3) {
   throw new Error("Please set your PRIVATE_KEY in a .env file");
 }
 
@@ -35,7 +43,13 @@ const chainIds = {
 };
 
 function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
-  if (!privateKey) {
+  if (!privateKey1) {
+    throw new Error("Please set your PRIVATE_KEY in a .env file");
+  }
+  if (!privateKey2) {
+    throw new Error("Please set your PRIVATE_KEY in a .env file");
+  }
+  if (!privateKey3) {
     throw new Error("Please set your PRIVATE_KEY in a .env file");
   }
 
@@ -51,7 +65,7 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
       jsonRpcUrl = "https://" + chain + ".infura.io/v3/" + infuraApiKey;
   }
   return {
-    accounts: [privateKey],
+    accounts: [privateKey1, privateKey2, privateKey3],
     chainId: chainIds[chain],
     url: jsonRpcUrl,
   };
@@ -84,8 +98,16 @@ const config: HardhatUserConfig = {
     hardhat: {
       accounts: [
         {
-          privateKey,
-          balance: "2797856500000000",
+          privateKey: privateKey1,
+          balance: "78373121650087584",
+        },
+        {
+          privateKey: privateKey2,
+          balance: "78373121650087584",
+        },
+        {
+          privateKey: privateKey3,
+          balance: "78373121650087584",
         },
       ],
       chainId: chainIds.hardhat,
